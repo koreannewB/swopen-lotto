@@ -63,3 +63,20 @@
 {% else %}
     <p>이전 회차가 없습니다.</p>
 {% endif %}
+<h2>사용자별 구매 내역</h2>
+
+{% for user, records in user_data.items %}
+  <h3>{{ user }} 구매내역</h3>
+
+  {% if records %}
+    <ul>
+      {% for line in records %}
+        <li>{{ line }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>구매 기록 없음</p>
+  {% endif %}
+
+  <hr>
+{% endfor %}

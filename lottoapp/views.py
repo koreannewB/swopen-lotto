@@ -2,7 +2,8 @@ from django.shortcuts import HttpResponse , render, redirect, get_object_or_404
 #render : 템플릿을 화면에 출력할때 사용
 #rediurect : 다른 url로 이동할때 사용
 from .forms import LottoForm
-
+import os
+import glob
 from .models import LottoEntry,LottoRound
 #같은 앱의 모델 LottoEntry를 가져옴
 #데이터 베이스에 저장조회할때 사용
@@ -112,6 +113,22 @@ def admin_page(request):
         sales_count = LottoEntry.objects.filter(round=round).count()
         sales_amount = sales_count * 1000  # 1회 구매 1000원 가정
 
+        #구매 볼륨
+        files = glob.glob("/app/data/*.txt")
+        user_data = {}
+
+        for file in files:
+            user = os.path.basename(file).replace(".txt", "")
+            with open(file, "r") as f:
+                user_data[user] = f.read().splitlines()
+
+
+
+
+
+
+
+
         # 당첨자 수 계산 (회차가 종료된 경우만)
         entries = LottoEntry.objects.filter(round=round)
         first = second = third =fourth=fifth =0
@@ -141,7 +158,8 @@ def admin_page(request):
     return render(request, 'lottoapp/admin.html', {
         'round_data': round_data,
         'current_round': current_round,
-        'previous_rounds': previous_rounds
+        'previous_rounds': previous_rounds,
+        'user_data': user_data,
     })
 @staff_member_required
 def close_round(request):
@@ -177,3 +195,4 @@ def next_round(request):
     LottoRound.objects.create(round_number=next_number, is_closed=False)
     
     return redirect('admin_page')
+
