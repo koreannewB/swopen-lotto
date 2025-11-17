@@ -99,7 +99,7 @@ def admin_page(request):
     current_round = LottoRound.objects.order_by('-round_number').first()
     rounds = LottoRound.objects.order_by('round_number')
     entries = LottoEntry.objects.filter(round=current_round) if current_round else []    
-
+    previous_rounds = LottoRound.objects.filter(is_closed=True).order_by('round_number')
 
     round_data = []
 
@@ -141,6 +141,7 @@ def admin_page(request):
     return render(request, 'lottoapp/admin.html', {
         'round_data': round_data,
         'current_round': current_round,
+        'previous_rounds': previous_rounds
     })
 @staff_member_required
 def close_round(request):

@@ -48,3 +48,18 @@
     </tr>
     {% endfor %}
 </table>
+<h2>이전 회차 당첨 번호</h2>
+{% if previous_rounds %}
+    <ul>
+    {% for round in previous_rounds %}
+        <li>
+            {{ round.round_number }}회차: 
+            {% for num in round.winning_numbers %}
+                ({{ num }})
+            {% endfor %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>이전 회차가 없습니다.</p>
+{% endif %}
