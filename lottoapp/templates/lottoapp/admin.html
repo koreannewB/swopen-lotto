@@ -1,0 +1,50 @@
+<h1>관리자 페이지</h1>
+
+{% if current_round %}
+<h2>현재 회차: {{ current_round.round_number }}회차</h2>
+<p>회차 상태: {% if current_round.is_closed %}종료{% else %}진행중{% endif %}</p>
+
+{% if not current_round.is_closed %}
+<form method="post" action="{% url 'close_round' %}">
+    {% csrf_token %}
+    <button type="submit">현재 회차 종료 → 당첨 번호 생성 & 다음 회차 생성</button>
+</form>
+{% else %}
+<h3>이번 회차 당첨 번호:</h3>
+<p>
+{% for n in current_round.winning_numbers %}
+({{ n }})
+{% endfor %}
+</p>
+{% endif %}
+
+
+
+{% else %}
+<p>회차 없음</p>
+{% endif %}
+<h2>회차별 판매/당첨 현황</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>회차</th>
+        <th>판매 수</th>
+        <th>판매 금액</th>
+        <th>1등</th>
+        <th>2등</th>
+        <th>3등</th>
+        <th>4등</th>
+        <th>5등</th>
+    </tr>
+    {% for data in round_data %}
+    <tr>
+        <td>{{ data.round.round_number }}</td>
+        <td>{{ data.sales_count }}</td>
+        <td>{{ data.sales_amount }}원</td>
+        <td>{{ data.first }}</td>
+        <td>{{ data.second }}</td>
+        <td>{{ data.third }}</td>
+        <td>{{ data.fourth }}</td>
+        <td>{{ data.fifth }}</td>
+    </tr>
+    {% endfor %}
+</table>

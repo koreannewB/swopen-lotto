@@ -1,0 +1,13 @@
+<h1>{{ entry.round.round_number }}회차 당첨 결과</h1>
+<p>구매 번호: 
+{% for n in entry.numbers %}
+({{ n }})
+{% endfor %}
+</p>
+<p>당첨 번호: 
+{% for n in winning_numbers %}
+({{ n }})
+{% endfor %}
+</p>
+<p>결과: {{ result }}</p>
+<a href="{% url 'home' %}">돌아가기</a>
